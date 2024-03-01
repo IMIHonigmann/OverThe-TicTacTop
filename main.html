@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Ex9 Tic Tac Toe</title>
+
+
+  
+  
+<style>
+  html {
+    font-family: 'Arial Narrow';
+  }
+  
+  td {
+    border: 1px solid black;
+    width:100px;
+    height:100px;
+    z-index:0;
+    transition-duration: 0.25s;
+  }
+  td:hover {
+    transform: scale(120%, 120%);
+    transition-duration: 0.3s ease-out;
+    background-color: rgba(224, 224, 224, 0.6);
+    border-radius: 10px;
+  }
+  
+  
+  
+ #youWon {
+    max-height: 100px;
+   	font-size: 40px;
+    overflow-y: hidden;
+   	margin: 10px;
+  }
+  
+  #nameInputs {
+    margin: 20px;
+    transition: 1s;
+  }
+  
+  #vidcontainer {
+	text-align: center;
+  }
+  
+  .hidden {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.4s ease-out;
+    }
+  
+  td img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+        z-index:10;
+}
+  tr { 
+    width: 300px;
+    height: 100px;
+    border: 1px solid black; 
+  }
+ 
+  table{
+    width: 300px;
+    border: 1px solid black;
+    border-collapse: collapse;
+    opacity: 1;
+    transition: opacity 0.4s ease-out;
+  }
+  
+  .gameContainer {
+	text-align: center;
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  #start {
+    display: block;
+    text-align: center;
+    transition: transform 0.2s;
+    border-style: groove;
+    border-radius: 10px;
+  }
+  
+  #start:hover {
+    transform: scale(150%, 150%);
+    transition-duration: 0.2s;
+    background-color: greenyellow;
+    cursor: pointer;
+    }
+    
+  .ligmatoe {
+    opacity: 1;
+    transition-duration: 0.3s ease;
+  }
+  
+</style> 
+</head>
+<body style="background-color:smokewhite">
+<!-- Insert the basic DOM Elements, that you want to use, h2-Header, table...-->
+  
+    <div class="gameContainer">
+    
+    <button id="start"> LETS F*CKIN START </button>
+  
+  <table border="1" class="ligmatoe">
+  <tr>
+    <td id="cell1"></td> <td id="cell2"></td> <td id="cell3"></td>
+  </tr>
+    
+  <tr>
+    <td id="cell4"></td> <td id="cell5"></td> <td id="cell6"></td>
+  </tr>
+    
+  <tr>
+    <td id="cell7"></td> <td id="cell8"></td> <td id="cell9"></td>
+  </tr>
+    
+  </table>
+     
+      <div id="nameInputs">
+        <label for="nameInputA"> Enter The Name of Player A and B (optional): </label>
+      	<input type="text" id="nameInputA" placeholder="Amogus">
+      	<label for="nameInputB"> </label>
+      	<input type="text" id="nameInputB" placeholder="Batrick Pateman">
+      </div>
+      
+      
+    
+    <h1 id="whichPlayer">
+      yo ready?
+    </h1>
+    
+    <h2 id="youWon">
+      Start the game
+    </h2>
+    
+  </div>
+  
+  <div id="vidcontainer">
+  </div>
+
+<script>
+    var playerNameX;
+    var playerNameO;
+  	var playerNameXF;
+  	var playerNameOF;
+  	var cells = ["cell1", "cell2", "cell3", "cell4", "cell5", "cell6", "cell7", "cell8", "cell9"];
+  	var gameEnded = false;
+  	var youWon = document.getElementById("youWon");
+  	var whichPlayer = document.getElementById('whichPlayer');
+  	var startButton = document.getElementById('start');
+  	
+  	var isDraw = false;
+  	var x = true;
+  	
+  
+  document.getElementById('vidcontainer').classList.add('hidden');
+
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelector(".ligmatoe").classList.add("hidden");
+        document.querySelectorAll('.ligmatoe td').forEach(function(td) {
+      td.addEventListener('mouseover', function (event) {
+        td.style.cursor = 'pointer'; });
+    });
+  });
+  
+  
+  document.getElementById("start").addEventListener("click", function () {
+  var nameInputA = document.getElementById('nameInputA');
+  var nameInputB = document.getElementById('nameInputB');
+  
+  if(nameInputA.value.length <= 15 && nameInputB.value.length <= 15)
+  {
+	playerNameX = nameInputA.value;
+  	playerNameO = nameInputB.value;
+    
+  	playerNameX = playerNameX == '' ? 'Amogus' : playerNameX;
+  	playerNameO = playerNameO == '' ? 'Batrick Pateman' : playerNameO;
+    
+  	playerNameXF = '<span style="color: green;">' + playerNameX.charAt(0) + '</span>' + playerNameX.slice(1);
+  	playerNameOF = '<span style="color: red;">'   + playerNameO.charAt(0) + '</span>' + playerNameO.slice(1);
+    
+  	document.querySelector(".ligmatoe").classList.remove("hidden");
+  	whichPlayer.innerHTML = 'Player ' + (x ? playerNameXF : playerNameOF) + ' is dran';
+  	youWon.textContent = "The game has begun";
+  	youWon.style.overflowY = 'scroll';
+  	youWon.style.fontSize = '20px';
+  	document.getElementById('nameInputs').remove();
+    startButton.style.display = 'none';
+  }
+  else
+  {
+    alert('Please input a name that contains under 16 characters');
+    if(nameInputA.value.length > 15) nameInputA.select();
+    else nameInputB.select();
+  }
+  
+});
+  
+  
+  
+  
+  function mouseClick(event)
+  {
+        var imgElement = new Image();
+    	youWon.style.textAlign = 'right';
+    
+    	if(document.getElementById(event.target.id).childElementCount == 0)
+        {
+          	if(x) 
+    		{
+      			
+      			imgElement.src = "img/x.png";
+              	document.getElementById(event.target.id).classList.add('x');
+              	youWon.innerHTML += '<br><span style ="color:green">' + playerNameX + ' has selected ' + event.target.id + '</span>';
+      			whichPlayer.innerHTML = 'Player ' + playerNameOF + ' is dran';
+                x = false;
+              	
+    		}
+    		else
+    		{
+      			imgElement.src = "img/o.png";
+              	document.getElementById(event.target.id).classList.add('o');
+              	youWon.innerHTML += '<br><span style ="color:red">' + playerNameO + ' has selected ' + event.target.id;
+      			whichPlayer.innerHTML = 'Player ' + playerNameXF + ' is dran';
+              	x = true;
+              
+        	}
+          
+        		imgElement.alt = "suckstosuck";
+       			document.getElementById(event.target.id).appendChild(imgElement);
+          
+          		checkWinner();
+    	}
+  }
+
+    
+    
+    function getElementInsideCell(cell)
+    {
+      var imgElement = document.getElementById(cell).querySelector('img');
+      
+      if (imgElement) {
+      var element = imgElement.src;
+      var XorO;
+      
+      if(element.includes("img/x.png")) XorO = "x";
+      if(element.includes("img/o.png")) XorO = "o";
+      
+      
+      return XorO;
+      }
+      else {
+        return null;
+      }
+    }
+  
+  function checkWinner()
+    {
+      var winnerTextA = "Player ";
+      var winnerTextE = "has won";
+      
+           if (
+             getElementInsideCell("cell3") == getElementInsideCell("cell5") &&
+             getElementInsideCell("cell3") == getElementInsideCell("cell7") &&
+             getElementInsideCell("cell3") )
+           	{
+              youWon.textContent = winnerTextA + convertXOToWinnerName(getElementInsideCell("cell3")) + winnerTextE;
+              styleWinner("cell3", "cell5", "cell7");
+              return;
+            }
+           if (
+             getElementInsideCell("cell1") == getElementInsideCell("cell5") &&
+             getElementInsideCell("cell1") == getElementInsideCell("cell9") &&
+             getElementInsideCell("cell1") )
+           	{
+              youWon.textContent = winnerTextA + convertXOToWinnerName(getElementInsideCell("cell1")) + winnerTextE;
+              styleWinner("cell1", "cell5", "cell9");
+              return;
+            }
+      		for (var i = 0; i < cells.length; i += 3) {
+           if (
+           getElementInsideCell(cells[i]) == getElementInsideCell(cells[i + 1]) &&
+           getElementInsideCell(cells[i]) == getElementInsideCell(cells[i + 2]) &&
+           getElementInsideCell(cells[i])
+           ) {
+           	youWon.textContent = winnerTextA + convertXOToWinnerName(getElementInsideCell(cells[i])) + winnerTextE;
+             styleWinner(cells[i], cells[i+1], cells[i+2]);
+             return;
+         	}
+         }
+
+           for (var c = 0; c < cells.length; c++) {
+           if (
+           getElementInsideCell(cells[c]) &&
+           getElementInsideCell(cells[c]) == getElementInsideCell(cells[c + 3]) &&
+           getElementInsideCell(cells[c]) == getElementInsideCell(cells[c + 6])
+           )
+           {
+           youWon.textContent = winnerTextA + convertXOToWinnerName(getElementInsideCell(cells[c])) + winnerTextE;
+             styleWinner(cells[c], cells[c+3], cells[c+6]);
+			
+            return;
+           }
+             
+             
+             var isFull = 0;
+             for(var j=1; j<=9;j++)
+             {
+               if(document.getElementById("cell" + j).childElementCount != 0 && !gameEnded)
+               {
+                 isFull++;
+                 if(isFull == 9) itsADraw();
+               }
+             }
+             
+             
+         }
+      	
+      
+      	
+      
+    }
+  	function itsADraw()
+      {
+        createYoutubePlayer('https://www.youtube.com/watch?v=sfAIkieHpsk');
+		youWon.textContent = "Well, it's a draw...";
+        document.body.style.transition = '25s';
+        document.body.style.backgroundColor = 'grey';
+        document.body.style.cursor = 'help';
+        styleWinner(0,0,0);
+        
+        
+      }
+  	
+  	function styleWinner(cell1, cell2, cell3) {
+      cells.forEach(function(cell) {
+                if (cell !== cell1 && cell !== cell2 && cell !== cell3) {
+                document.getElementById(cell).style.transform = 'scale(90%, 90%)';
+                document.getElementById(cell).style.backgroundColor = 'rgba(224, 224, 224, 0.9)';
+              	}
+                else {
+                  	document.getElementById(cell).style.backgroundColor = 'rgba(173, 255, 47, 0.8)';
+              		document.getElementById(cell).style.transform = 'scale(120%, 120%)';
+              		document.getElementById(cell).style.borderRadius = '20px';
+                }
+              });
+      
+     document.getElementById('vidcontainer').classList.remove('hidden');
+     
+     startButton.onclick = function() {location.reload();}; //this doesnt work in IMIEdit please use the project in a separate tab to work
+     startButton.textContent = 'Revenge?';
+     startButton.style.margin = '10px';
+     whichPlayer.textContent = 'The game has ended.';
+     youWon.style.fontSize = '45px';
+     youWon.style.overflowY = 'hidden';
+     youWon.style.fontFamily = 'Arial Black';
+     startButton.style.display = 'block';
+      
+     gameEnded = true;
+      
+    }
+  
+  	
+  	
+  	function convertXOToWinnerName (winner)
+  	{
+    	if(winner == 'x') 
+        {
+          	createYoutubePlayer('https://www.youtube.com/embed/dsnmtF2QCMc?autoplay=1&controls=0');
+          	return playerNameX + ' ';
+        }
+        
+      	else if(winner == 'o') 
+      	{
+        	createYoutubePlayer('https://www.youtube.com/watch?v=coyMil9mV9o');
+          	return playerNameO + ' ';
+      	}
+  	}
+  
+  	function createYoutubePlayer(link) {
+      var watchPattern = /watch\?v=/gi;
+      var autoplayControlPattern = /\?autoplay=1&controls=0/gi;
+      var filteredLink1 = link.replace(watchPattern, 'embed/');
+      var filteredLink2 = filteredLink1.replace(autoplayControlPattern, '');
+      filteredLink2 += '?autoplay=1&controls=0';
+      
+      var iframe = document.createElement('iframe');
+      
+      iframe.width = '560';
+      iframe.height = '315';
+      iframe.src = filteredLink2;
+      iframe.frameBorder = '0';
+      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      
+      document.getElementById('vidcontainer').appendChild(iframe);
+    }
+
+  
+  document.querySelector('.ligmatoe').addEventListener("click", function() {if(!gameEnded) mouseClick(event);});
+  
+  
+
+  
+</script>
+</body>
+</html>
+
